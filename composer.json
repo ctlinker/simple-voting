@@ -1,0 +1,18 @@
+{
+    "name": "cat/vote",
+    "description": "simple voting web applications",
+    "type": "project",
+    "license": "Apache-2.0",
+    "autoload": {
+        "psr-4": {
+            "Cat\\Vote\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ctlinker",
+            "email": "166874035+Ctlinker@users.noreply.github.com"
+        }
+    ],
+    "require": {}
+}
