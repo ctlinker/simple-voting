@@ -1,4 +1,6 @@
 <?php
+
+use DB\Database;
 session_start();
 require 'db.php';
 
@@ -9,8 +11,7 @@ if (!isset($_SESSION['valid_token_id'])) {
 }
 
 // Fetch candidates
-$stmt = $pdo->query("SELECT * FROM candidates");
-$candidates = $stmt->fetchAll();
+$candidates = Database::fetchAll("SELECT * FROM candidates");
 ?>
 
 <!DOCTYPE html>

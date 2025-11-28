@@ -1,8 +1,8 @@
 <?php
-session_start();
 require __DIR__ . "/../../vendor/autoload.php";
+use DB\Database;
+session_start();
 
-require "db.php";
 
 $error = "";
 
@@ -10,9 +10,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $code = trim($_POST["token"]);
 
     // Check if token exists and is not used
-    $stmt = $pdo->prepare("SELECT * FROM tokens WHERE code = ?");
-    $stmt->execute([$code]);
-    $token = $stmt->fetch();
+    $token = Database::fetch("SELECT * FROM tokens WHERE code = ?", [$code]);
+    // $stmt = $pdo->prepare("SELECT * FROM tokens WHERE code = ?");
+    // $stmt->execute([$code]);
+    // $token = $stmt->fetch();
 
     if ($token && $token["is_used"] == 0) {
         $_SESSION["valid_token_id"] = $token["id"]; // Save ID to session
@@ -28,7 +29,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <!DOCTYPE html>
 <html>
-<head><title>Vote Login</title></head>
+
+<head>
+    <title>Vote Login</title>
+</head>
+
 <body>
     <h2>Enter your Voting Token</h2>
     <?php if ($error) {
@@ -39,4 +44,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <button type="submit">Enter</button>
     </form>
 </body>
+
 </html>
