@@ -8,8 +8,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Cat\\Vote\\": "src/",
-      "Mock\\": "src/mock"
+      "DB\\": "src/data",
+      "Cat\\Vote\\": "src/"
     }
   },
   "authors": [
