@@ -1,18 +1,24 @@
 {
-    "name": "cat/vote",
-    "description": "simple voting web applications",
-    "type": "project",
-    "license": "Apache-2.0",
-    "autoload": {
-        "psr-4": {
-            "Cat\\Vote\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Ctlinker",
-            "email": "166874035+Ctlinker@users.noreply.github.com"
-        }
-    ],
-    "require": {}
+  "name": "cat/vote",
+  "description": "simple voting web applications",
+  "type": "project",
+  "license": "Apache-2.0",
+  "scripts": {
+    "serve": "php -S localhost:8000 -t src/public"
+  },
+  "autoload": {
+    "psr-4": {
+      "Cat\\Vote\\": "src/",
+      "Mock\\": "src/mock"
+    }
+  },
+  "authors": [
+    {
+      "name": "Ctlinker",
+      "email": "166874035+Ctlinker@users.noreply.github.com"
+    }
+  ],
+  "require": {
+    "php": "^7.4 || ^8.0"
+  }
 }
