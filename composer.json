@@ -4,7 +4,8 @@
   "type": "project",
   "license": "Apache-2.0",
   "scripts": {
-    "serve": "php -S localhost:8000 -t src/public"
+    "serve": "php -S localhost:8000 -t src/public",
+    "init-db": "mariadb -u $PROJET_USER -p $PROJECT_USER_PASSWORD -e (cat assets/db-schema.sql)"
   },
   "autoload": {
     "psr-4": {
