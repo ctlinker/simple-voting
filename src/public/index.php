@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . "/../../vendor/autoload.php";
+require_once "deps.php";
 use DB\Database;
 session_start();
 
@@ -11,9 +11,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Check if token exists and is not used
     $token = Database::fetch("SELECT * FROM tokens WHERE code = ?", [$code]);
-    // $stmt = $pdo->prepare("SELECT * FROM tokens WHERE code = ?");
-    // $stmt->execute([$code]);
-    // $token = $stmt->fetch();
 
     if ($token && $token["is_used"] == 0) {
         $_SESSION["valid_token_id"] = $token["id"]; // Save ID to session

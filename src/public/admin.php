@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . "/../../vendor/autoload.php";
+require_once "deps.php";
 use DB\Database;
 
 // LOGIC: Calculate Results
@@ -8,14 +8,13 @@ $sql = "SELECT c.name, COUNT(v.id) as vote_count
         LEFT JOIN votes v ON c.id = v.candidate_id 
         GROUP BY c.id 
         ORDER BY vote_count DESC";
-//$results = $pdo->query($sql)->fetchAll();
 $results = Database::fetchAll($sql);
+
 // LOGIC: Generate Tokens (Helper for the admin)
 if (isset($_POST['generate_tokens'])) {
     for ($i = 0; $i < 10; $i++) {
         $code = strtoupper(bin2hex(random_bytes(4))); // Generates random string like 1A2B3C4D
         Database::insert("tokens", [ "code" => $code ]);
-        //$pdo->prepare("INSERT INTO tokens (code) VALUES (?)")->execute([$code]);
     }
     header("Location: admin.php"); // Refresh
 }

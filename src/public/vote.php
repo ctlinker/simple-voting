@@ -1,8 +1,7 @@
 <?php
-
+require_once "deps.php";
 use DB\Database;
 session_start();
-require 'db.php';
 
 // Protect the page
 if (!isset($_SESSION['valid_token_id'])) {
