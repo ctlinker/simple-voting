@@ -24,3 +24,16 @@ CREATE TABLE votes (
     FOREIGN KEY (candidate_id) REFERENCES candidates(id),
     FOREIGN KEY (token_id) REFERENCES tokens(id)
 );
+
+-- Table for Admin Settings
+CREATE TABLE admin_settings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    results_visible TINYINT(1) DEFAULT 0 -- 0: Hidden, 1: Visible
+);
+
+-- Table for Admin Users
+CREATE TABLE admin_users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    password_hash VARCHAR(255) NOT NULL,
+    is_active TINYINT(1) DEFAULT 1 -- 0: Inactive, 1: Active
+);
