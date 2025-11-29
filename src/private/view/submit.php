@@ -16,7 +16,7 @@ if (!$token_id || !$candidate_id) {
 
 try {
 
-    Database::useTransaction(function (Database $DB, PDO $pdo) use ($token_id, $candidate_id) {
+    Database::useTransaction(function ($DB, PDO $pdo) use ($token_id, $candidate_id) {
 
         // 1. Lock the token row
         $token = $DB::fetch(

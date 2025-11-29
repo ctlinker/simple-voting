@@ -274,7 +274,7 @@ class Database
             }
 
             // Execute user code
-            $result = $fn(self::class, $pdo);
+            $result = $fn(Database::class, $pdo);
 
             if (self::$transactionDepth === 1) {
                 // Outermost transaction
