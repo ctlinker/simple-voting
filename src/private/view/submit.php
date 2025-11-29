@@ -1,5 +1,4 @@
 <?php
-require_once "deps.php";
 session_start();
 use DB\Database;
 
