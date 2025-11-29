@@ -20,6 +20,11 @@
     }
   ],
   "require": {
-    "php": "^7.4 || ^8.0"
+    "ext-iconv": "*",
+    "ext-mysql": "*",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*",
+    "php": "^7.4 || ^8.0",
+    "dompdf/dompdf": "^3.1"
   }
 }
