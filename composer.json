@@ -9,8 +9,9 @@
   },
   "autoload": {
     "psr-4": {
-      "DB\\": "src/data",
-      "Cat\\Vote\\": "src/"
+      "Cat\\Vote\\": "src/",
+      "DB\\": "src/private/data",
+      "Utils\\": "src/private/utils"
     }
   },
   "authors": [
