@@ -1,5 +1,6 @@
 <?php
 use DB\Database;
+use Utils\Error;
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
