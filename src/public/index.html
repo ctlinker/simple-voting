@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vote and Admin Login</title>
+        <link rel="stylesheet" href="style/index.css" />
+    </head>
+    <body>
+        <div>
+            <div class="toggle-buttons">
+                <button id="toggle-vote" class="active">Vote</button>
+                <button id="toggle-admin">Admin</button>
+            </div>
+            <form
+                id="admin-form"
+                action="api.php/?request=admin"
+            >
+                <label for="admin_username">
+                    <input
+                        type="text"
+                        name="admin_username"
+                        placeholder="Admin Username"
+                        required
+                    />
+                </label>
+                <label for="admin_password">
+                    <input
+                        type="password"
+                        name="admin_password"
+                        placeholder="Admin Password"
+                        required
+                    />
+                </label>
+                <button type="submit">Valider</button>
+            </form>
+            <form id="vote-form" class="active" action="api.php/?request=vote" method="post">
+                <label for="token_id">
+                    Entrer Votre Token Afin De Voter:
+                    <input
+                        type="text"
+                        pattern="^[a-zA-Z\d]+$"
+                        name="token_id"
+                        placeholder="Votre Token"
+                        required
+                    />
+                </label>
+                <button type="submit">Valider</button>
+            </form>
+        </div>
+        <script>
+            const toggleAdmin = document.getElementById("toggle-admin");
+            const toggleVote = document.getElementById("toggle-vote");
+            const adminForm = document.getElementById("admin-form");
+            const voteForm = document.getElementById("vote-form");
+
+            toggleAdmin.addEventListener("click", () => {
+                adminForm.classList.add("active");
+                voteForm.classList.remove("active");
+                toggleAdmin.classList.add("active");
+                toggleVote.classList.remove("active");
+            });
+
+            toggleVote.addEventListener("click", () => {
+                voteForm.classList.add("active");
+                adminForm.classList.remove("active");
+                toggleVote.classList.add("active");
+                toggleAdmin.classList.remove("active");
+            });
+        </script>
+    </body>
+</html>
