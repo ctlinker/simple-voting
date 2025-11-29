@@ -15,7 +15,7 @@ class Database
         "db" => "voting_app",
         "user" => "catlinks",
         "pass" => "!1234567",
-        "charset" => "utf8mb4"
+        "charset" => "utf8mb4",
     ];
 
     /**
@@ -24,7 +24,7 @@ class Database
     private static ?PDO $pdo = null;
 
     /**
-     * Returns a singleton PDO instance.  
+     * Returns a singleton PDO instance.
      * Creates the connection if it doesn't exist yet.
      *
      * @throws PDOException If connection fails
@@ -34,10 +34,13 @@ class Database
     public static function connect(): PDO
     {
         if (self::$pdo === null) {
-
-            $dsn = "mysql:host=" . self::$config["host"] .
-                ";dbname=" . self::$config["db"] .
-                ";charset=" . self::$config["charset"];
+            $dsn =
+                "mysql:host=" .
+                self::$config["host"] .
+                ";dbname=" .
+                self::$config["db"] .
+                ";charset=" .
+                self::$config["charset"];
 
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -46,9 +49,17 @@ class Database
             ];
 
             try {
-                self::$pdo = new PDO($dsn, self::$config["user"], self::$config["pass"], $options);
+                self::$pdo = new PDO(
+                    $dsn,
+                    self::$config["user"],
+                    self::$config["pass"],
+                    $options,
+                );
             } catch (PDOException $e) {
-                throw new PDOException("DB Connection failed: " . $e->getMessage(), (int) $e->getCode());
+                throw new PDOException(
+                    "DB Connection failed: " . $e->getMessage(),
+                    (int) $e->getCode(),
+                );
             }
         }
 
@@ -71,9 +82,12 @@ class Database
         $placeholders = array_fill(0, count($columns), "?");
         $values = array_values($data);
 
-        $query = "INSERT INTO `$table` (" .
+        $query =
+            "INSERT INTO `$table` (" .
             implode(", ", array_map(fn($c) => "`$c`", $columns)) .
-            ") VALUES (" . implode(", ", $placeholders) . ")";
+            ") VALUES (" .
+            implode(", ", $placeholders) .
+            ")";
 
         $stmt = $pdo->prepare($query);
         $stmt->execute($values);
@@ -91,8 +105,12 @@ class Database
      *
      * @return int Number of affected rows
      */
-    public static function update(string $table, array $data, string $where, array $whereParams = []): int
-    {
+    public static function update(
+        string $table,
+        array $data,
+        string $where,
+        array $whereParams = [],
+    ): int {
         $pdo = self::connect();
 
         $columns = array_keys($data);
@@ -102,7 +120,8 @@ class Database
             $setParts[] = "`$col` = ?";
         }
 
-        $sql = "UPDATE `$table` SET " . implode(", ", $setParts) . " WHERE $where";
+        $sql =
+            "UPDATE `$table` SET " . implode(", ", $setParts) . " WHERE $where";
 
         $params = array_merge(array_values($data), $whereParams);
 
@@ -110,6 +129,32 @@ class Database
         $stmt->execute($params);
 
         return $stmt->rowCount();
+    }
+
+    /**
+     * Find rows matching a WHERE clause in one or more tables.
+     *
+     * @param string[] $tables       List of table names to select from.
+     * @param string[] $cols         List of column names to select.
+     * @param string   $where        SQL WHERE clause (without the "WHERE" keyword).
+     * @param mixed[]  $whereParams  Parameters bound to the prepared statement.
+     *
+     * @return int Number of rows returned by the query.
+     */
+    public static function findAll(
+        array $tables,
+        array $cols,
+        string $where,
+        array $whereParams = [],
+    ): int {
+        $sql =
+            "SELECT " .
+            implode(", ", $cols) .
+            " FROM " .
+            implode(", ", $tables) .
+            " WHERE $where";
+
+        return self::fetchAll($sql, $whereParams);
     }
 
     /**
@@ -121,8 +166,11 @@ class Database
      *
      * @return int Number of affected rows
      */
-    public static function delete(string $table, string $where, array $params = []): int
-    {
+    public static function delete(
+        string $table,
+        string $where,
+        array $params = [],
+    ): int {
         $pdo = self::connect();
 
         $sql = "DELETE FROM `$table` WHERE $where";
@@ -140,11 +188,14 @@ class Database
      * @param array<int,mixed>  $params   Parameters for prepared query
      * @param bool              $fetchAll Return all rows or only the first row
      *
-     * @return array<mixed> If $fetchAll=true → list of rows  
+     * @return array<mixed> If $fetchAll=true → list of rows
      *                      If $fetchAll=false → single row or empty array
      */
-    public static function query(string $sql, array $params = [], bool $fetchAll = true): array
-    {
+    public static function query(
+        string $sql,
+        array $params = [],
+        bool $fetchAll = true,
+    ): array {
         $pdo = self::connect();
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
@@ -213,7 +264,6 @@ class Database
         self::$transactionDepth++;
 
         try {
-
             if (self::$transactionDepth === 1) {
                 // Real transaction start
                 $pdo->beginTransaction();
@@ -236,9 +286,7 @@ class Database
             }
 
             return $result;
-
         } catch (\Throwable $e) {
-
             if (self::$transactionDepth === 1) {
                 // Outermost rollback
                 $pdo->rollBack();
@@ -249,7 +297,6 @@ class Database
             }
 
             throw $e;
-
         } finally {
             // Critical: always decrease depth
             self::$transactionDepth--;
