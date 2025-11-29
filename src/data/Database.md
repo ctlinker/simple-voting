@@ -1,5 +1,12 @@
 # ✅ Basic Usage Examples
 
+## Description
+
+The Database class wrap, facilitate and secure interation with the db.
+All of it's method are definied as static.
+
+## Exemple usage
+
 ### 1. **Insert a row**
 
 ```php
