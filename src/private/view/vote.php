@@ -1,6 +1,5 @@
 <?php
 use DB\Database;
-use Utils\Error;
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -21,33 +20,42 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 // Protect the page
 if (!isset($_SESSION["valid_token_id"])) {
-    header("Location: /index.html");
+    header("Location: index.php");
     exit();
 }
 
 // Fetch candidates
-$token_id = $_SESSION["valid_token_id"];
 $candidates = Database::fetchAll("SELECT * FROM candidates");
 ?>
 
 <!DOCTYPE html>
-<html>
-<head><title>Cast Your Vote</title></head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote</title>
+    <link rel="stylesheet" href="/style/vote.css">
+</head>
 <body>
-    <h2>Select a Candidate</h2>
-    <form action="/api.php/?request=submit_vote" method="POST" onsubmit="document.getElementById('token_id').value = <?= $token_id ?>;">
-        <?php foreach ($candidates as $candidate): ?>
-            <div class="candidate-card">
-                <label>
-                    <input type="radio" name="candidate_id" value="<?= $candidate[
-                        "id"
-                    ] ?>" required>
-                    <strong><?= htmlspecialchars($candidate["name"]) ?></strong>
-                </label>
-            </div>
-        <?php endforeach; ?>
-        <input type="hidden" id="token_id" hidden name="token_id" value="">
-        <button type="submit" onclick="return confirm('Are you sure?')">Submit Vote</button>
-    </form>
+    <div class="vote-container">
+        <h1>Liste des Candidats</h1>
+        <ul class="candidate-list">
+            <?php foreach ($candidates as $candidate): ?>
+                <li class="candidate-item">
+                    <span class="candidate-name"><?= htmlspecialchars(
+                        $candidate["name"],
+                        ENT_QUOTES,
+                        "UTF-8",
+                    ) ?></span>
+                    <form action="/api.php/?request=submit_vote" method="POST" class="vote-form">
+                        <input type="hidden" name="candidate_id" value="<?= $candidate[
+                            "id"
+                        ] ?>">
+                        <button type="submit" class="vote-button">Voter Pour</button>
+                    </form>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
 </body>
 </html>

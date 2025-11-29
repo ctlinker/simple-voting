@@ -1,0 +1,80 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Container Styling */
+.vote-container {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+}
+
+/* Header Styling */
+.vote-container h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Candidate List Styling */
+.candidate-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.candidate-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    background: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.candidate-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* Candidate Name Styling */
+.candidate-name {
+    font-size: 18px;
+    color: #555;
+}
+
+/* Vote Button Styling */
+.vote-button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+    font-size: 14px;
+}
+
+.vote-button:hover {
+    background-color: #0056b3;
+}
+
+.vote-button:active {
+    transform: translateY(2px);
+}
