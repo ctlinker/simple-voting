@@ -8,6 +8,6 @@ class Path{
     }
 
     public static function resolvePublicPath(string $path){
-        return __DIR__ . "/" . ".." . "/" . "public" . "/" . $path;
+        return __DIR__ . "/" . ".." . "/" . ".."  . "/" . "public" . "/" . $path;
     }
 }
