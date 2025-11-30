@@ -7,7 +7,9 @@ body {
     color: #333;
 }
 
-h1, h3, h4 {
+h1,
+h3,
+h4 {
     text-align: center;
     color: #444;
 }
@@ -26,7 +28,8 @@ table {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-table th, table td {
+table th,
+table td {
     padding: 10px;
     text-align: center;
     border: 1px solid #ddd;
@@ -50,7 +53,7 @@ table td {
 }
 
 .bar {
-    background: #4CAF50;
+    background: #4caf50;
     height: 100%;
     text-align: center;
     color: white;
@@ -59,36 +62,40 @@ table td {
 }
 
 /* Forms */
-form {
-    width: 80%;
-    margin: 20px auto;
+form.token-form {
+    width: 100%;
+    margin: 10px 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+    gap: 10px;
 }
 
-form label {
-    margin-bottom: 10px;
+form.token-form .form-group label {
+    margin-right: 10px;
     font-weight: bold;
+    flex: 1;
 }
 
-form input[type="number"] {
-    width: 50%;
+form.token-form .form-group input[type="number"] {
+    flex: 2;
     padding: 8px;
-    margin-bottom: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
     box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-form button {
-    padding: 10px 20px;
+form.token-form button.btn-primary {
+    padding: 8px 16px;
     background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
 }
 
 form button:hover {
@@ -100,25 +107,27 @@ form button:active {
 }
 
 /* Token List */
-ul {
+ul.token-list {
     list-style: none;
     padding: 0;
-    margin: 20px auto;
-    width: 80%;
+    margin: 10px 0;
+    width: 100%;
 }
 
-ul li {
-    padding: 10px;
-    margin-bottom: 10px;
-    background: #f8f8f8;
+ul.token-list .token-item {
+    padding: 8px;
+    margin-bottom: 8px;
+    background: #ffffff;
     border: 1px solid #ddd;
     border-radius: 4px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-ul li strong {
+ul.token-list .token-item .token-status {
+    font-weight: bold;
     color: #007bff;
 }
 
@@ -135,7 +144,9 @@ ul li strong {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .visibility-toggle button:hover {

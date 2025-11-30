@@ -120,20 +120,24 @@ $results = Database::fetchAll($sql);
 
                     <h3>Token Management</h3>
 
-                    <form method="POST" action="/api.php/?request=admin_dashboard">
-                        <label for="token_count">Nombre de tokens à générer :</label>
-                        <input type="number" id="token_count" name="token_count" min="1" value="10" required>
-                        <button type="submit" name="generate_tokens">Générer</button>
+                    <form method="POST" action="/api.php/?request=admin_dashboard" class="token-form">
+                        <div class="form-group">
+                            <label for="token_count">Nombre de tokens à générer :</label>
+                            <input type="number" id="token_count" name="token_count" min="1" value="10" required>
+                        </div>
+                        <button type="submit" name="generate_tokens" class="btn-primary">Générer</button>
                     </form>
 
-                    <form method="POST" action="/api.php/?request=admin_dashboard" style="margin-top: 10px;">
-                        <label for="export_count">Nombre de tokens à exporter :</label>
-                        <input type="number" id="export_count" name="export_count" min="1" value="10" required>
-                        <button type="submit" name="export_tokens_pdf">Exporter en PDF</button>
+                    <form method="POST" action="/api.php/?request=admin_dashboard" class="token-form">
+                        <div class="form-group">
+                            <label for="export_count">Nombre de tokens à exporter :</label>
+                            <input type="number" id="export_count" name="export_count" min="1" value="10" required>
+                        </div>
+                        <button type="submit" name="export_tokens_pdf" class="btn-primary">Exporter en PDF</button>
                     </form>
 
                     <h4>Existing Tokens:</h4>
-                    <ul>
+                    <ul class="token-list">
                         <?php
                         $tokens = Database::fetchAll(
                             sql: "SELECT * FROM tokens ORDER BY id DESC LIMIT 20",
@@ -141,7 +145,7 @@ $results = Database::fetchAll($sql);
 
                         foreach ($tokens as $t) {
                             $status = $t["is_used"] ? "USED" : "ACTIVE";
-                            echo "<li>{$t["code"]} - <strong>$status</strong></li>";
+                            echo "<li class='token-item'><span class='token-code'>{$t["code"]}</span> - <strong class='token-status $status'>$status</strong></li>";
                         }
                         ?>
                     </ul>
@@ -152,7 +156,7 @@ $results = Database::fetchAll($sql);
             <div class="sidebar-panel" data-view="candidat">
                 <div class="card">
                     <h2>Gestion des Candidats</h3>
-                        
+
                     <h3>Ajouter un Candidat</h3>
                     <div class="add-candidate">
                         <form method="POST" action="/api.php/?request=admin_dashboard"
@@ -208,10 +212,13 @@ $results = Database::fetchAll($sql);
                     </h2>
                     <form method="POST" action="/api.php/?request=admin_dashboard">
                         <?php
-                        $sql = "SELECT results_visible FROM admin_settings WHERE id = 1";
+                        $sql =
+                            "SELECT results_visible FROM admin_settings WHERE id = 1";
                         $visibility = Database::fetch($sql)["results_visible"];
 
-                        $buttonText = $visibility ? "Hide Results" : "Show Results";
+                        $buttonText = $visibility
+                            ? "Hide Results"
+                            : "Show Results";
                         ?>
                         <button type="submit" name="toggle_results_visibility">
                             <?= $buttonText ?>
@@ -225,15 +232,19 @@ $results = Database::fetchAll($sql);
                     <table>
                         <?php
                         // Calculate total for percentage
-                        $total_votes = array_sum(array_column($results, "vote_count"));
+                        $total_votes = array_sum(
+                            array_column($results, "vote_count"),
+                        );
 
                         foreach ($results as $row):
                             $width =
                                 $total_votes > 0
-                                ? ($row["vote_count"] / $total_votes) * 100
-                                : 0; ?>
+                                    ? ($row["vote_count"] / $total_votes) * 100
+                                    : 0; ?>
                             <tr>
-                                <td width="150"><?= htmlspecialchars($row["name"]) ?></td>
+                                <td width="150"><?= htmlspecialchars(
+                                    $row["name"],
+                                ) ?></td>
                                 <td>
                                     <div class="bar-container">
                                         <div class="bar" style="width: <?= $width ?>%;">
