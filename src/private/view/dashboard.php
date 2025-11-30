@@ -155,21 +155,24 @@ $results = Database::fetchAll($sql);
 
             <div class="sidebar-panel" data-view="candidat">
                 <div class="card">
-                    <h2>Gestion des Candidats</h3>
+                    <h2>Gestion des Candidats</h2>
 
                     <h3>Ajouter un Candidat</h3>
                     <div class="add-candidate">
-                        <form method="POST" action="/api.php/?request=admin_dashboard"
-                            enctype="multipart/form-data">
-                            <label for="candidate_name">Nom du Candidat:</label>
-                            <input type="text" id="candidate_name" name="candidate_name" required>
-                            <label for="candidate_photo">Photo du Candidat (optionnel):</label>
-                            <input type="file" id="candidate_photo" name="candidate_photo" accept="image/*">
-                            <button type="submit" name="add_candidate">Ajouter</button>
+                        <form method="POST" action="/api.php/?request=admin_dashboard" enctype="multipart/form-data" class="candidate-form">
+                            <div class="form-group">
+                                <label for="candidate_name">Nom du Candidat:</label>
+                                <input type="text" id="candidate_name" name="candidate_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="candidate_photo">Photo du Candidat (optionnel):</label>
+                                <input type="file" id="candidate_photo" name="candidate_photo" accept="image/*">
+                            </div>
+                            <button type="submit" name="add_candidate" class="btn-primary">Ajouter</button>
                         </form>
                     </div>
 
-                    <h3>Candidat Existant</h3>
+                    <h3>Candidats Existants</h3>
                     <div class="candidate-management">
                         <ul class="candidate-list">
                             <?php
@@ -178,13 +181,11 @@ $results = Database::fetchAll($sql);
                             );
                             foreach ($candidates as $candidate): ?>
                                 <li class="candidate-item">
-                                    <form method="POST" action="/api.php/?request=admin_dashboard"
-                                        class="remove-candidate-form">
+                                    <form method="POST" action="/api.php/?request=admin_dashboard" class="remove-candidate-form">
                                         <input type="hidden" name="candidate_id" value="<?= $candidate[
                                             "id"
                                         ] ?>">
-                                        <button type="submit" name="remove_candidate"
-                                            class="remove-candidate-btn">Supprimer</button>
+                                        <button type="submit" name="remove_candidate" class="btn-danger">Supprimer</button>
                                     </form>
                                     <span class="candidate-name"><?= htmlspecialchars(
                                         $candidate["name"],

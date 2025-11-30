@@ -86,7 +86,7 @@ form.token-form .form-group input[type="number"] {
     box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-form.token-form button.btn-primary {
+form.token-form button.btn-primary, button.btn-danger {
     padding: 8px 16px;
     background-color: #007bff;
     color: #fff;
@@ -96,6 +96,15 @@ form.token-form button.btn-primary {
     transition:
         background-color 0.2s ease,
         transform 0.2s ease;
+}
+
+button.btn-danger {
+    background-color: #ff2600;
+}
+
+button.btn-danger:hover {
+    background-color: #000000;
+    color: white;
 }
 
 form button:hover {
@@ -114,9 +123,9 @@ ul.token-list {
     width: 100%;
 }
 
-ul.token-list .token-item {
-    padding: 8px;
-    margin-bottom: 8px;
+ul.token-list .token-item, ul.candidate-list .candidate-item {
+    padding: 10px;
+    margin-bottom: 10px;
     background: #ffffff;
     border: 1px solid #ddd;
     border-radius: 4px;
