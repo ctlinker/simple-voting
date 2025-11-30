@@ -95,132 +95,180 @@ $results = Database::fetchAll($sql);
 <head>
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="/style/card.css">
+    <link rel="stylesheet" href="/style/sidebar.css">
     <link rel="stylesheet" href="/style/dashboard.css">
 </head>
 
 <body>
-
-
-    <div class="card">
-
-        <h3>Token Management</h3>
-
-        <form method="POST" action="/api.php/?request=admin_dashboard">
-            <label for="token_count">Nombre de tokens à générer :</label>
-            <input type="number" id="token_count" name="token_count" min="1" value="10" required>
-            <button type="submit" name="generate_tokens">Générer</button>
-        </form>
-
-        <form method="POST" action="/api.php/?request=admin_dashboard" style="margin-top: 10px;">
-            <label for="export_count">Nombre de tokens à exporter :</label>
-            <input type="number" id="export_count" name="export_count" min="1" value="10" required>
-            <button type="submit" name="export_tokens_pdf">Exporter en PDF</button>
-        </form>
-
-        <h3>
-            Visibilité des Résultats
-        </h3>
-        <form method="POST" action="/api.php/?request=admin_dashboard">
-            <?php
-            $sql = "SELECT results_visible FROM admin_settings WHERE id = 1";
-            $visibility = Database::fetch($sql)["results_visible"];
-
-            $buttonText = $visibility ? "Hide Results" : "Show Results";
-            ?>
-            <button type="submit" name="toggle_results_visibility">
-                <?= $buttonText ?>
+    <div class="sidebar-container">
+        <div class="sidebar">
+            <button class="sidebar-btn current" data-view="token">
+                Token
             </button>
-        </form>
 
-    </div>
+            <button class="sidebar-btn" data-view="candidat">
+                Candidat
+            </button>
 
-    <h1>Election Results</h1>
-
-    <table>
-        <?php
-        // Calculate total for percentage
-        $total_votes = array_sum(array_column($results, "vote_count"));
-
-        foreach ($results as $row):
-            $width =
-                $total_votes > 0
-                    ? ($row["vote_count"] / $total_votes) * 100
-                    : 0; ?>
-            <tr>
-                <td width="150"><?= htmlspecialchars($row["name"]) ?></td>
-                <td>
-                    <div class="bar-container">
-                        <div class="bar" style="width: <?= $width ?>%;">
-                            <?= $row["vote_count"] ?>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <?php
-        endforeach;
-        ?>
-    </table>
-
-    <hr>
-
-    <h3>Gestion des Candidats</h3>
-    <div class="candidate-management">
-        <button id="add-candidate-btn">+ Ajouter un Candidat</button>
-        <ul class="candidate-list">
-            <?php
-            $candidates = Database::fetchAll(
-                "SELECT * FROM candidates ORDER BY id ASC",
-            );
-            foreach ($candidates as $candidate): ?>
-                <li class="candidate-item">
-                    <form method="POST" action="/api.php/?request=admin_dashboard" class="remove-candidate-form">
-                        <input type="hidden" name="candidate_id" value="<?= $candidate[
-                            "id"
-                        ] ?>">
-                        <button type="submit" name="remove_candidate" class="remove-candidate-btn">Supprimer</button>
-                    </form>
-                    <span class="candidate-name"><?= htmlspecialchars(
-                        $candidate["name"],
-                        ENT_QUOTES,
-                        "UTF-8",
-                    ) ?></span>
-                </li>
-            <?php endforeach;
-            ?>
-        </ul>
-    </div>
-
-    <!-- Modal for Adding Candidate -->
-    <div id="add-candidate-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>Ajouter un Candidat</h2>
-            <form method="POST" action="/api.php/?request=admin_dashboard" enctype="multipart/form-data">
-                <label for="candidate_name">Nom du Candidat:</label>
-                <input type="text" id="candidate_name" name="candidate_name" required>
-                <label for="candidate_photo">Photo du Candidat (optionnel):</label>
-                <input type="file" id="candidate_photo" name="candidate_photo" accept="image/*">
-                <button type="submit" name="add_candidate">Ajouter</button>
-            </form>
+            <button class="sidebar-btn" data-view="resultat">
+                Résultat
+            </button>
         </div>
+        <div class="sidebar-content">
+            <div class="sidebar-panel visible" data-view="token">
+                <div class="card">
+
+                    <h3>Token Management</h3>
+
+                    <form method="POST" action="/api.php/?request=admin_dashboard">
+                        <label for="token_count">Nombre de tokens à générer :</label>
+                        <input type="number" id="token_count" name="token_count" min="1" value="10" required>
+                        <button type="submit" name="generate_tokens">Générer</button>
+                    </form>
+
+                    <form method="POST" action="/api.php/?request=admin_dashboard" style="margin-top: 10px;">
+                        <label for="export_count">Nombre de tokens à exporter :</label>
+                        <input type="number" id="export_count" name="export_count" min="1" value="10" required>
+                        <button type="submit" name="export_tokens_pdf">Exporter en PDF</button>
+                    </form>
+
+                    <h4>Existing Tokens:</h4>
+                    <ul>
+                        <?php
+                        $tokens = Database::fetchAll(
+                            sql: "SELECT * FROM tokens ORDER BY id DESC LIMIT 20",
+                        );
+
+                        foreach ($tokens as $t) {
+                            $status = $t["is_used"] ? "USED" : "ACTIVE";
+                            echo "<li>{$t["code"]} - <strong>$status</strong></li>";
+                        }
+                        ?>
+                    </ul>
+
+                </div>
+            </div>
+
+            <div class="sidebar-panel" data-view="candidat">
+                <div class="card">
+                    <h2>Gestion des Candidats</h3>
+                        
+                    <h3>Ajouter un Candidat</h3>
+                    <div class="add-candidate">
+                        <form method="POST" action="/api.php/?request=admin_dashboard"
+                            enctype="multipart/form-data">
+                            <label for="candidate_name">Nom du Candidat:</label>
+                            <input type="text" id="candidate_name" name="candidate_name" required>
+                            <label for="candidate_photo">Photo du Candidat (optionnel):</label>
+                            <input type="file" id="candidate_photo" name="candidate_photo" accept="image/*">
+                            <button type="submit" name="add_candidate">Ajouter</button>
+                        </form>
+                    </div>
+
+                    <h3>Candidat Existant</h3>
+                    <div class="candidate-management">
+                        <ul class="candidate-list">
+                            <?php
+                            $candidates = Database::fetchAll(
+                                "SELECT * FROM candidates ORDER BY id ASC",
+                            );
+                            foreach ($candidates as $candidate): ?>
+                                <li class="candidate-item">
+                                    <form method="POST" action="/api.php/?request=admin_dashboard"
+                                        class="remove-candidate-form">
+                                        <input type="hidden" name="candidate_id" value="<?= $candidate[
+                                            "id"
+                                        ] ?>">
+                                        <button type="submit" name="remove_candidate"
+                                            class="remove-candidate-btn">Supprimer</button>
+                                    </form>
+                                    <span class="candidate-name"><?= htmlspecialchars(
+                                        $candidate["name"],
+                                        ENT_QUOTES,
+                                        "UTF-8",
+                                    ) ?></span>
+                                </li>
+                            <?php endforeach;
+                            ?>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sidebar-panel" data-view="resultat">
+                <div class="card">
+
+                    <h1>
+                        Gestion Des Resultat
+                    </h1>
+
+                    <h2>
+                        Visibilité des Résultats
+                    </h2>
+                    <form method="POST" action="/api.php/?request=admin_dashboard">
+                        <?php
+                        $sql = "SELECT results_visible FROM admin_settings WHERE id = 1";
+                        $visibility = Database::fetch($sql)["results_visible"];
+
+                        $buttonText = $visibility ? "Hide Results" : "Show Results";
+                        ?>
+                        <button type="submit" name="toggle_results_visibility">
+                            <?= $buttonText ?>
+                        </button>
+                    </form>
+
+
+                    <h2>Election Results</h2>
+
+
+                    <table>
+                        <?php
+                        // Calculate total for percentage
+                        $total_votes = array_sum(array_column($results, "vote_count"));
+
+                        foreach ($results as $row):
+                            $width =
+                                $total_votes > 0
+                                ? ($row["vote_count"] / $total_votes) * 100
+                                : 0; ?>
+                            <tr>
+                                <td width="150"><?= htmlspecialchars($row["name"]) ?></td>
+                                <td>
+                                    <div class="bar-container">
+                                        <div class="bar" style="width: <?= $width ?>%;">
+                                            <?= $row["vote_count"] ?>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php
+                        endforeach;
+                        ?>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script>
+            const buttons = document.querySelectorAll(".sidebar-btn");
+            const panels = document.querySelectorAll(".sidebar-panel");
+
+            buttons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const view = btn.dataset.view;
+
+                    // Update active button
+                    buttons.forEach(b => b.classList.remove("current"));
+                    btn.classList.add("current");
+
+                    // Update visible content
+                    panels.forEach(p => {
+                        p.classList.toggle("visible", p.dataset.view === view);
+                    });
+                });
+            });
+        </script>
     </div>
-
-    <h4>Existing Tokens:</h4>
-    <ul>
-        <?php
-        $tokens = Database::fetchAll(
-            sql: "SELECT * FROM tokens ORDER BY id DESC LIMIT 20",
-        );
-
-        foreach ($tokens as $t) {
-            $status = $t["is_used"] ? "USED" : "ACTIVE";
-            echo "<li>{$t["code"]} - <strong>$status</strong></li>";
-        }
-        ?>
-    </ul>
-
-    <hr>
-
 </body>
 
 </html>
