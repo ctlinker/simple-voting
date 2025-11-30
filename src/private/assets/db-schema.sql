@@ -34,6 +34,6 @@ CREATE TABLE admin_settings (
 -- Table for Admin Users
 CREATE TABLE admin_users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    password_hash VARCHAR(255) NOT NULL,
-    is_active TINYINT(1) DEFAULT 1 -- 0: Inactive, 1: Active
+    username VARCHAR(32) NOT NULL,
+    password VARCHAR(255) NOT NULL
 );
