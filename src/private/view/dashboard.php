@@ -204,11 +204,11 @@ $results = Database::fetchAll($sql);
             <div class="sidebar-panel" data-view="resultat">
                 <div class="card">
 
-                    <h1>
-                        Gestion Des Resultat
+                    <h1 class="section-title">
+                        Gestion des Résultats
                     </h1>
 
-                    <h2>
+                    <h2 class="subsection-title">
                         Visibilité des Résultats
                     </h2>
                     <form method="POST" action="/api.php/?request=admin_dashboard">
@@ -221,16 +221,16 @@ $results = Database::fetchAll($sql);
                             ? "Hide Results"
                             : "Show Results";
                         ?>
-                        <button type="submit" name="toggle_results_visibility">
+                        <button type="submit" name="toggle_results_visibility" class="btn-primary">
                             <?= $buttonText ?>
                         </button>
                     </form>
 
 
-                    <h2>Election Results</h2>
+                    <h2 class="subsection-title">Résultats des Élections</h2>
 
 
-                    <table>
+                    <table class="results-table">
                         <?php
                         // Calculate total for percentage
                         $total_votes = array_sum(
@@ -247,8 +247,8 @@ $results = Database::fetchAll($sql);
                                     $row["name"],
                                 ) ?></td>
                                 <td>
-                                    <div class="bar-container">
-                                        <div class="bar" style="width: <?= $width ?>%;">
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar" style="width: <?= $width ?>%;">
                                             <?= $row["vote_count"] ?>
                                         </div>
                                     </div>
