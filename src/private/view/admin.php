@@ -22,8 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     } else {
         Error::invoque("Mot de passe invalide ou Username Invalide");
-        sleep(2);
-        header("Location: /index.html");
         exit();
     }
 }
