@@ -21,6 +21,11 @@
         exit();
     }
 
+    if($request == "admin_dashboard") {
+        require_once Path::resolvePrivatePath(path: "view/dashboard.php");
+        exit();
+    }
+
     if($request == "error-test") {
         Error::invoque(message: "Message d'erreur de test");
         exit();
