@@ -146,7 +146,7 @@ class Database
         array $cols,
         string $where,
         array $whereParams = [],
-    ): int {
+    ): array {
         $sql =
             "SELECT " .
             implode(", ", $cols) .
