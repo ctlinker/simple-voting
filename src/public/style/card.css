@@ -1,0 +1,25 @@
+/* General Card Styling */
+.card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Child Float Shadow */
+.card.child_float > * {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Hover Effect for Card */
+.card:hover {
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Hover Effect for Child Elements */
+.card.child_float > *:hover {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.15);
+}
