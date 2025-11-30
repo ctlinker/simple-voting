@@ -265,22 +265,40 @@ $results = Database::fetchAll($sql);
         </div>
         <script>
             const buttons = document.querySelectorAll(".sidebar-btn");
-            const panels = document.querySelectorAll(".sidebar-panel");
+            const panels  = document.querySelectorAll(".sidebar-panel");
 
+            // --- Restore state on load ---
+            const savedView = localStorage.getItem("sidebar:view");
+
+            if (savedView) {
+                activateView(savedView);
+            }
+
+            // --- Add listeners ---
             buttons.forEach(btn => {
                 btn.addEventListener("click", () => {
                     const view = btn.dataset.view;
 
-                    // Update active button
-                    buttons.forEach(b => b.classList.remove("current"));
-                    btn.classList.add("current");
+                    // Save state
+                    localStorage.setItem("sidebar:view", view);
 
-                    // Update visible content
-                    panels.forEach(p => {
-                        p.classList.toggle("visible", p.dataset.view === view);
-                    });
+                    // Apply
+                    activateView(view);
                 });
             });
+
+            // --- Core function ---
+            function activateView(view) {
+                // Update buttons
+                buttons.forEach(b => {
+                    b.classList.toggle("current", b.dataset.view === view);
+                });
+
+                // Update panels
+                panels.forEach(p => {
+                    p.classList.toggle("visible", p.dataset.view === view);
+                });
+            }
         </script>
     </div>
 </body>
