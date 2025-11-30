@@ -60,6 +60,8 @@ if (isset($_POST["add_candidate"])) {
         "name" => $candidateName,
         "photo" => $candidatePhoto,
     ]);
+
+    unset($_POST["add_candidate"], $_FILES["candidate_photo"]);
 }
 
 // LOGIC: Remove Candidate
@@ -221,7 +223,7 @@ $results = Database::fetchAll($sql);
                             ? "Hide Results"
                             : "Show Results";
                         ?>
-                        <button type="submit" name="toggle_results_visibility" class="btn-primary">
+                            <button type="submit" name="toggle_results_visibility" class="btn-primary">
                             <?= $buttonText ?>
                         </button>
                     </form>
